@@ -22,5 +22,8 @@ sealed interface Screen {
     data object Help : Screen
 
     @Serializable
+    data object Translator : Screen
+
+    @Serializable
     data class ResourceDetail(val resourceId: String) : Screen
 }

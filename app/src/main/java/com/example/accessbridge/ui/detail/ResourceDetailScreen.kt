@@ -237,7 +237,7 @@ fun ResourceDetailScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Location / Address if present
-                currentResource.address?.let { address ->
+                currentResource.address?.takeIf { it.isNotBlank() }?.let { address ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -274,7 +274,7 @@ fun ResourceDetailScreen(
                 }
 
                 // Action Buttons
-                currentResource.contactNumber?.let { contact ->
+                currentResource.contactNumber?.takeIf { it.isNotBlank() }?.let { contact ->
                     Button(
                         onClick = { dialPhone(context, contact) },
                         modifier = Modifier
@@ -300,7 +300,7 @@ fun ResourceDetailScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                 }
 
-                currentResource.contentUrl?.let { url ->
+                currentResource.contentUrl?.takeIf { it.isNotBlank() }?.let { url ->
                     Button(
                         onClick = { openWebPage(context, url) },
                         modifier = Modifier

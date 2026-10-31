@@ -23,8 +23,23 @@ interface ResourceDao {
     @Query("SELECT * FROM resources WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' ORDER BY lastUpdated DESC")
     fun searchResources(query: String): Flow<List<ResourceEntity>>
 
+    @Query("SELECT * FROM resources WHERE (:language = 'All' OR language = :language OR language = 'en') ORDER BY lastUpdated DESC")
+    fun getAllResourcesByLanguage(language: String): Flow<List<ResourceEntity>>
+
+    @Query("SELECT * FROM resources WHERE type = :type AND (:language = 'All' OR language = :language OR language = 'en') ORDER BY lastUpdated DESC")
+    fun getResourcesByTypeAndLanguage(type: String, language: String): Flow<List<ResourceEntity>>
+
+    @Query("SELECT * FROM resources WHERE category = :category AND (:language = 'All' OR language = :language OR language = 'en') ORDER BY lastUpdated DESC")
+    fun getResourcesByCategoryAndLanguage(category: String, language: String): Flow<List<ResourceEntity>>
+
+    @Query("SELECT * FROM resources WHERE (title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%') AND (:language = 'All' OR language = :language OR language = 'en') ORDER BY lastUpdated DESC")
+    fun searchResourcesByLanguage(query: String, language: String): Flow<List<ResourceEntity>>
+
     @Upsert
     suspend fun upsertResources(resources: List<ResourceEntity>)
+
+    @Query("SELECT COUNT(*) FROM resources")
+    suspend fun getResourceCount(): Int
 
     @Query("DELETE FROM resources WHERE lastUpdated < :thresholdTimestamp")
     suspend fun deleteOldResources(thresholdTimestamp: Long = 0L)

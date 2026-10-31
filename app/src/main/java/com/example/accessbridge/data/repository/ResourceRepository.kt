@@ -18,6 +18,12 @@ interface ResourceRepository {
     fun getResourcesByCategory(category: String): Flow<List<ResourceEntity>>
     fun searchResources(query: String): Flow<List<ResourceEntity>>
 
+    fun getAllResourcesByLanguage(language: String): Flow<List<ResourceEntity>>
+    fun getResourcesByTypeAndLanguage(type: String, language: String): Flow<List<ResourceEntity>>
+    fun getResourcesByCategoryAndLanguage(category: String, language: String): Flow<List<ResourceEntity>>
+    fun searchResourcesByLanguage(query: String, language: String): Flow<List<ResourceEntity>>
+
     suspend fun syncResources(): Result<Unit>
     suspend fun deleteOldResources(thresholdTimestamp: Long = 0L)
+    fun updateNetworkConnectivity(isConnected: Boolean)
 }

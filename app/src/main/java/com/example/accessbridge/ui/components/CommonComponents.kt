@@ -127,6 +127,8 @@ fun SyncStatusBanner(
         color = when (syncStatus) {
             is SyncStatus.Error -> MaterialTheme.colorScheme.errorContainer
             is SyncStatus.Syncing -> MaterialTheme.colorScheme.secondaryContainer
+            is SyncStatus.Offline -> MaterialTheme.colorScheme.surfaceContainerHigh
+            is SyncStatus.Success -> MaterialTheme.colorScheme.surfaceContainerHigh
             else -> MaterialTheme.colorScheme.surfaceContainerHigh
         },
         tonalElevation = 2.dp
@@ -147,6 +149,7 @@ fun SyncStatusBanner(
                         is SyncStatus.Error -> Icons.Default.Warning
                         is SyncStatus.Syncing -> Icons.Default.Refresh
                         is SyncStatus.Success -> Icons.Default.CloudDone
+                        is SyncStatus.Offline -> Icons.Default.CloudOff
                         else -> Icons.Default.CloudOff
                     },
                     contentDescription = "Sync Status",
@@ -154,6 +157,7 @@ fun SyncStatusBanner(
                         is SyncStatus.Error -> MaterialTheme.colorScheme.error
                         is SyncStatus.Syncing -> MaterialTheme.colorScheme.primary
                         is SyncStatus.Success -> MaterialTheme.colorScheme.primary
+                        is SyncStatus.Offline -> MaterialTheme.colorScheme.outline
                         else -> MaterialTheme.colorScheme.outline
                     },
                     modifier = Modifier
@@ -166,8 +170,9 @@ fun SyncStatusBanner(
                 Column {
                     val statusText = when (syncStatus) {
                         is SyncStatus.Syncing -> "Syncing data..."
-                        is SyncStatus.Error -> "Offline / Sync Error"
+                        is SyncStatus.Error -> "Sync Error"
                         is SyncStatus.Success -> "Online • Local DB Ready"
+                        is SyncStatus.Offline -> "Offline • Using Local Cache"
                         else -> "Offline Mode"
                     }
                     Text(
@@ -473,18 +478,16 @@ fun EmergencyContactCard(
     phoneNumber: String,
     description: String,
     category: String = "Emergency",
+    onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
+    val cardColors = CardDefaults.cardColors(
+        containerColor = MaterialTheme.colorScheme.errorContainer
+    )
+
+    val content: @Composable () -> Unit = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -554,6 +557,27 @@ fun EmergencyContactCard(
                     modifier = Modifier.size(28.dp)
                 )
             }
+        }
+    }
+
+    if (onClick != null) {
+        Card(
+            onClick = onClick,
+            modifier = modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = cardColors,
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            content()
+        }
+    } else {
+        Card(
+            modifier = modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = cardColors,
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            content()
         }
     }
 }

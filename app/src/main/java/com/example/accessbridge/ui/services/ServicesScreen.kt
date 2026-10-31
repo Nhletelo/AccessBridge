@@ -36,7 +36,7 @@ import com.example.accessbridge.ui.components.CategoryFilterChips
 import com.example.accessbridge.ui.components.ResourceCard
 import com.example.accessbridge.ui.home.ResourceViewModel
 
-val servicesCategories = listOf("All", "Healthcare", "Home Affairs", "Social Grants", "Municipal Services")
+val servicesCategories = listOf("All", "Healthcare", "Home Affairs", "Social Grants", "Municipal Services", "Education", "Employment")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +48,10 @@ fun ServicesScreen(
         factory = ResourceViewModel.provideFactory(LocalContext.current)
     )
 ) {
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.onTabSelected("SERVICE")
+    }
+
     val resources by viewModel.resources.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()

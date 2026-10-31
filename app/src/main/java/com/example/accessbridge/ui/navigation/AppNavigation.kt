@@ -14,6 +14,7 @@ import com.example.accessbridge.ui.home.HomeScreen
 import com.example.accessbridge.ui.learn.LearnScreen
 import com.example.accessbridge.ui.onboarding.OnboardingScreen
 import com.example.accessbridge.ui.services.ServicesScreen
+import com.example.accessbridge.ui.translator.TranslatorScreen
 
 @Composable
 fun AppNavigation(
@@ -55,8 +56,14 @@ fun AppNavigation(
                 onNavigateToLearn = { navController.navigate(Screen.Learn) },
                 onNavigateToServices = { navController.navigate(Screen.Services) },
                 onNavigateToHelp = { navController.navigate(Screen.Help) },
+                onNavigateToTranslator = { navController.navigate(Screen.Translator) },
                 onNavigateToDetail = { resourceId ->
                     navController.navigate(Screen.ResourceDetail(resourceId))
+                },
+                onSignOut = {
+                    navController.navigate(Screen.Auth) {
+                        popUpTo(Screen.Home) { inclusive = true }
+                    }
                 }
             )
         }
@@ -85,6 +92,12 @@ fun AppNavigation(
                 onNavigateToDetail = { resourceId ->
                     navController.navigate(Screen.ResourceDetail(resourceId))
                 }
+            )
+        }
+
+        composable<Screen.Translator> {
+            TranslatorScreen(
+                onBack = { navController.popBackStack() }
             )
         }
 

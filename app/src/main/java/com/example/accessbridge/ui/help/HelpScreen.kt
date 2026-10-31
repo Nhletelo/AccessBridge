@@ -1,7 +1,6 @@
 package com.example.accessbridge.ui.help
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -42,6 +42,10 @@ fun HelpScreen(
         factory = ResourceViewModel.provideFactory(LocalContext.current)
     )
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.onTabSelected("HELP")
+    }
+
     val resources by viewModel.resources.collectAsState()
     val helpResources = resources.filter { it.type == "HELP" }
 
@@ -79,7 +83,7 @@ fun HelpScreen(
             item {
                 SectionTitle(text = "1-Touch Emergency Hotlines")
                 Text(
-                    text = "Tap the call button for immediate assistance. Calls operate nationwide across South Africa.",
+                    text = "Tap any card for details or tap the call icon for immediate 1-touch dial across South Africa.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -91,7 +95,8 @@ fun HelpScreen(
                     title = "National Emergency Hotline",
                     phoneNumber = "112",
                     description = "Free 24/7 call line for police, medical assistance, and fire rescue.",
-                    category = "Emergency"
+                    category = "Emergency",
+                    onClick = { onNavigateToDetail("help-1") }
                 )
             }
 
@@ -100,7 +105,8 @@ fun HelpScreen(
                     title = "SAPS Crime Stop & Police Emergency",
                     phoneNumber = "10111",
                     description = "South African Police Service 24/7 emergency hotline.",
-                    category = "Police"
+                    category = "Police",
+                    onClick = { onNavigateToDetail("help-2") }
                 )
             }
 
@@ -109,7 +115,8 @@ fun HelpScreen(
                     title = "Gender-Based Violence (GBV) Command Centre",
                     phoneNumber = "0800 150 150",
                     description = "24/7 confidential crisis line, counseling & shelter assistance.",
-                    category = "Helpline"
+                    category = "Helpline",
+                    onClick = { onNavigateToDetail("help-3") }
                 )
             }
 
@@ -118,7 +125,8 @@ fun HelpScreen(
                     title = "SASSA Social Services Helpline",
                     phoneNumber = "0800 60 10 11",
                     description = "Official helpline for social grant status & emergency relief.",
-                    category = "Social Grants"
+                    category = "Social Grants",
+                    onClick = { onNavigateToDetail("help-4") }
                 )
             }
 
@@ -127,7 +135,8 @@ fun HelpScreen(
                     title = "SADAG Mental Health Crisis Line",
                     phoneNumber = "0800 567 567",
                     description = "24-hour mental health counseling and crisis support.",
-                    category = "Mental Health"
+                    category = "Mental Health",
+                    onClick = { onNavigateToDetail("help-5") }
                 )
             }
 
@@ -136,7 +145,8 @@ fun HelpScreen(
                     title = "Childline South Africa",
                     phoneNumber = "116",
                     description = "Free 24/7 hotline for child safety, protection, and family support.",
-                    category = "Child Welfare"
+                    category = "Child Welfare",
+                    onClick = { onNavigateToDetail("help-6") }
                 )
             }
 

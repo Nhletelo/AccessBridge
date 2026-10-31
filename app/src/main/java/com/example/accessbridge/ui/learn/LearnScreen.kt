@@ -36,7 +36,7 @@ import com.example.accessbridge.ui.components.CategoryFilterChips
 import com.example.accessbridge.ui.components.ResourceCard
 import com.example.accessbridge.ui.home.ResourceViewModel
 
-val learnCategories = listOf("All", "Digital Skills", "Job Skills", "Social Grants")
+val learnCategories = listOf("All", "Digital Skills", "Job Skills", "Social Grants", "Education", "Employment")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +48,10 @@ fun LearnScreen(
         factory = ResourceViewModel.provideFactory(LocalContext.current)
     )
 ) {
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.onTabSelected("LEARN")
+    }
+
     val resources by viewModel.resources.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()

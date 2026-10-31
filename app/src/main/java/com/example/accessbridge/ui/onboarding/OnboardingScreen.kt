@@ -17,6 +17,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.example.accessbridge.R
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.OfflineBolt
@@ -34,9 +37,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,16 +45,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.accessbridge.ui.components.LanguageSelector
+import com.example.accessbridge.ui.components.SALanguages
+import com.example.accessbridge.ui.home.ResourceViewModel
 import com.example.accessbridge.ui.theme.AccessBridgeTheme
 
 @Composable
 fun OnboardingScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToAuth: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ResourceViewModel = viewModel(
+        factory = ResourceViewModel.provideFactory(LocalContext.current)
+    )
 ) {
-    var selectedLanguageCode by remember { mutableStateOf("en") }
+    val selectedLanguage by viewModel.selectedLanguage.collectAsState()
+    val langName = SALanguages.find { it.first == selectedLanguage }?.second ?: "English"
 
     Scaffold(modifier = modifier.fillMaxSize()) { paddingValues ->
         Column(
@@ -76,8 +85,8 @@ fun OnboardingScreen(
                     horizontalArrangement = Arrangement.End
                 ) {
                     LanguageSelector(
-                        selectedLanguageCode = selectedLanguageCode,
-                        onLanguageSelected = { selectedLanguageCode = it }
+                        selectedLanguageCode = selectedLanguage,
+                        onLanguageSelected = { viewModel.onLanguageSelected(it) }
                     )
                 }
 
@@ -91,11 +100,10 @@ fun OnboardingScreen(
                         .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Public,
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_access_bridge_logo),
                         contentDescription = "AccessBridge Logo",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(56.dp)
+                        modifier = Modifier.size(64.dp)
                     )
                 }
 
@@ -133,8 +141,8 @@ fun OnboardingScreen(
 
                 OnboardingFeatureCard(
                     icon = Icons.Default.Language,
-                    title = "11 Official SA Languages",
-                    description = "Select your preferred local language for localized instructions and content."
+                    title = "11 Official SA Languages ($langName)",
+                    description = "Select your preferred local language for localized instructions and content. Active: $langName."
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))

@@ -11,8 +11,8 @@ import io.github.jan.supabase.storage.Storage
  */
 object SupabaseClientProvider {
     // Configurable placeholders for Supabase URL and anon key
-    var supabaseUrl: String = "https://your-supabase-project.supabase.co"
-    var supabaseKey: String = "your-anon-key-placeholder"
+    var supabaseUrl: String = "https://bkofijkozlgehiopwfgp.supabase.co"
+    var supabaseKey: String = "sb_publishable_QQaXx33D1kTkNALZJ-wiVw_cxADHGzo"
 
     val client: SupabaseClient by lazy {
         createSupabaseClient(

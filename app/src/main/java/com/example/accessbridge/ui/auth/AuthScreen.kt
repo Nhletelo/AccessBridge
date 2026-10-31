@@ -1,5 +1,8 @@
 package com.example.accessbridge.ui.auth
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.example.accessbridge.R
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -78,10 +81,18 @@ fun AuthScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = if (selectedTabIndex == 0) "Sign In" else "Create Account",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_access_bridge_logo),
+                            contentDescription = "AccessBridge Logo",
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "AccessBridge",
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
